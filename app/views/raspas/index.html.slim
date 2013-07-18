@@ -1,0 +1,7 @@
+- provide :title, "passe adiante"
+.col.col-lg-10
+  section#wall
+    #new-entry
+      / = render 'form'
+    - @raspas.each do |raspa|
+      = render 'raspa', raspa: raspa

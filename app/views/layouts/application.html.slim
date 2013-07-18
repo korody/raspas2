@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    title = page_title yield(:title)
+    = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
+    = csrf_meta_tags
+    / = render 'layouts/analytics'
+    /[if lt IE 9]
+      script src='http://html5shim.googlecode.com/svn/trunk/html5.js'
+    meta name='viewport" content="width=device-width, initial-scale=1.0'
+    meta https-equiv="Content-type" content="text/html; charset=utf-8"
+    meta https-equiv="content-language" content="pt-BR"
+    meta name="description" content="#{ page_description yield(:description) }"
+    / = display_meta_tags site: 'raspas'
+  body
+    .container-fluid
+      .row-fluid
+        / = render 'fbsdk'
+        = render 'flash'
+        = yield :sidebar
+        = yield
+  = javascript_include_tag "application", "data-turbolinks-track" => true

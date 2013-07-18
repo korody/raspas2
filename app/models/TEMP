@@ -1,0 +1,16 @@
+trendind_period = 1.week
+
+before_Create :set_trend_ending
+
+  private
+
+  def set_trending_ending
+    self.finish_trendind = trendind_period.from_now
+  end
+
+
+
+
+
+after_create :queue_new_follower_email,
+  if: Proc.new { |f| f.followed_user.receive_emails? }

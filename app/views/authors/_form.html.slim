@@ -1,0 +1,27 @@
+.col.col-lg-3
+  section
+    = render 'error_messages', object: @author
+    = form_for @author do |f|
+      fieldset
+        / = f.select :guest, [['visitante', true], ['membro', false]], class: 'input-large' if @author.guest?
+        h4 QUEM É VOCÊ?
+        / - if @author.guest?
+        /     h5 você ainda é um visitante. adicione e-mail e senha 
+        /     h5 para se tornar um benfeitor e proteger seu perfil.
+        hr
+        = f.text_field :name, class: 'input-large', placeholder: 'NOME'
+        -  unless @author.new_record?
+          = f.text_field :username, class: 'input-large', placeholder: 'APELIDO' 
+          = f.text_field :aka, class: 'input-large', placeholder: 'HETERÔNIMO' 
+          = f.text_field :aka, class: 'input-large', placeholder: 'HETERÔNIMO' 
+          = f.text_field :job, class: 'input-large', placeholder: 'ATUAÇÃO' 
+          = f.text_area :bio, rows: 4, class: 'input-large', placeholder: 'BIOGRAFIA' 
+          = f.date_input :dob, class: 'input-large', placeholder: 'NASCIMENTO' 
+          = f.date_input :dod, class: 'input-large', placeholder: 'POSTERIDADE' 
+          = f.date_input :social, class: 'input-large', placeholder: 'SOCIAL' 
+          = f.date_input :website, class: 'input-large', placeholder: 'WEBSITE' 
+          = f.date_input :type, class: 'input-large', placeholder: 'TIPO' 
+        = f.text_field :email, class: 'input-large', placeholder: 'E-MAIL'
+        = f.password_field :password, class: 'input-large', placeholder: 'SENHA'
+      = f.submit 'CRIE-SE', class: 'btn btn-info btn-large btn-block'
+      / = link_to 'APAGUE-SE', current_user, method: :delete, class: 'btn btn-default btn-large btn-block'

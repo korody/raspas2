@@ -1,0 +1,4 @@
+var relationship = $(".relationship_form");
+
+relationship.html('<%= j render("form", author: @author) %>');
+relationship.html(relationship.find('.relationship_form').html());

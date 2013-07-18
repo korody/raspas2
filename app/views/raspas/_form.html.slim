@@ -1,0 +1,9 @@
+.col.col-lg-4
+  section
+    = render 'error_messages', object: @new_raspa
+    = form_for @new_raspa do |f|
+      fieldset
+        = f.text_area :quote, rows: 4, class: 'input-large', placeholder: "escreva sua raspa aqui"
+        = f.text_field :note, class: 'input-large input-block-level', placeholder: "informações extras"
+        / = f.text_field :from_user, type: 'hidden', class: 'input-large', value:current_user.name if signed_in?
+      = f.submit 'enviar', class: 'btn btn-block btn-large btn-link'

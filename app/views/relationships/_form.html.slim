@@ -1,0 +1,22 @@
+.relationship_form
+  - if current_user.fan?(author)
+    = form_for [author, current_user.relationships.find_by(idol_id: author)], method: :delete, remote: true do
+      = content_tag :button, type: 'submit', class: 'btn btn-default', 'data-disable-with' => "#{icon_tag('rss')} FAN", 'data-relationship' => 'unfan' do
+        #{icon_tag 'rss'} UNFAN
+  - elsif @author == current_user
+    none
+  - else
+    = form_for [author, Relationship.new], remote: true do |f|
+      = content_tag :button, type: 'submit', class: 'btn btn-default', 'data-disable-with' => "#{icon_tag('rss')} UNFAN", 'data-relationship' => 'fan' do
+        #{icon_tag 'rss'} FAN
+
+/ .subscription-form-wrapper
+/   - if signed_in? && current_user.subscribed?(discussion)
+/     = form_for [discussion, current_user.subscriptions.find_by_discussion_id(discussion)], method: :delete, remote: true do
+/       = content_tag :button, type: 'submit', 'data-disable-with' => "#{icon_tag('rss')} Unfollow", 'data-subscription' => 'unsubscribe' do
+/         #{icon_tag 'rss'} Unfollow
+/   - else
+/     = form_for [discussion, Subscription.new], remote: true do |f|
+/       = render 'session_fields', show_email: false
+/       = content_tag :button, type: 'submit', 'data-disable-with' => "#{icon_tag('rss')} Follow discussion", 'data-subscription' => 'subscribe' do
+/         #{icon_tag 'rss'} Follow discussion

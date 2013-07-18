@@ -1,0 +1,14 @@
+= content_tag 'div', class:"col-lg-4 element".html_safe do
+  .raspa.thumbnail.border
+    p.quote.lead = "#{truncate(raspa.quote.gsub(/\n/, '<br/>'), length: 400)} <span class='note'>#{raspa.note}</span>".html_safe
+    h5 = link_to "{ #{raspa.author.name}", authors_raspas_path(raspa.author.username)
+    p = raspa.created_at.strftime("%d.%m.%Y")
+    p = link_to raspa.origin.title, raspa.origin if raspa.origin
+    = raw raspa.tags.pluck(:name).map { |t| link_to t, tag_path(t) }.join(', ')
+    - if current_user?(raspa.author)
+      = icon_link_to 'pencil', edit_raspa_path(raspa), title: 'editar', post: @new_raspa
+      = icon_link_to 'trash', raspa, method: :delete, title: 'apagar'
+    - else
+      = link_to "recitar", reaspas_path(raspa_id: raspa), method: :post, class: 'btn btn-info'
+    p = "#{pluralize raspa.citations.size, "reaspa"}" if raspa.citations.size > 0 
+    p = raw raspa.citations.pluck(:status).join('')
