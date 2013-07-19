@@ -10,5 +10,9 @@
       = icon_link_to 'trash', raspa, method: :delete, title: 'apagar'
     - else
       = link_to "recitar", reaspas_path(raspa_id: raspa), method: :post, class: 'btn btn-info'
-    p = "#{pluralize raspa.citations.size, "reaspa"}" if raspa.citations.size > 0 
-    p = raw raspa.citations.pluck(:status).join('')
+    / REVISE for performance and best-practice ------------
+    br
+    - raspa.reaspas.last(1).each do |a|
+      = "recitado por #{link_to a.author.name, a.author}".html_safe
+      = " e mais #{raspa.citations.size - 1}" if raspa.citations.size > 1 
+    / ------------------- REVISE

@@ -4,7 +4,6 @@ class CreateAuthors < ActiveRecord::Migration
       t.string :name
       t.string :username
       t.string :aka
-      t.string :job
       t.text :bio
       t.date :dob
       t.date :dod

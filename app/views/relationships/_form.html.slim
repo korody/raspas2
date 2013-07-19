@@ -1,5 +1,5 @@
 .relationship_form
-  - if current_user.fan?(author)
+  - if signed_in? && current_user.fan?(author)
     = form_for [author, current_user.relationships.find_by(idol_id: author)], method: :delete, remote: true do
       = content_tag :button, type: 'submit', class: 'btn btn-default', 'data-disable-with' => "#{icon_tag('rss')} FAN", 'data-relationship' => 'unfan' do
         #{icon_tag 'rss'} UNFAN

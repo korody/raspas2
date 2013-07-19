@@ -1,0 +1,8 @@
+- content_for(:sidebar) do
+  .col.col-lg-2
+    .sidebar
+      = link_to (image_tag "logo.png"), root_path
+      h3 = @origin.title
+      p = raw @origin.genres.pluck(:name).map { |g| link_to g, genre_path(g) }.join(', ')
+        
+= render file: 'layouts/application'

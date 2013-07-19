@@ -9,6 +9,7 @@
         = link_to "entrar", signin_path, class: 'btn btn-success'
         = link_to "cadastrar", signup_path, class: 'btn btn-primary'
       = render 'relationships/form', author: @author
+    = raw @author.jobs.pluck(:name).map { |j| link_to j, job_path(j) }.join(', ')
       h2 IDOLS
       / - for relationship in @author.relationships
       /   =h relationship.idol

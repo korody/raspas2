@@ -4,6 +4,9 @@ class Author < ActiveRecord::Base
   has_many :raspas
   has_many :origins
 
+  has_many :experiences, dependent: :destroy
+  has_many :jobs, through: :experiences
+
   has_many :relationships, dependent: :destroy
   has_many :idols, through: :relationships
 

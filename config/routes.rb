@@ -14,7 +14,11 @@ Raspas::Application.routes.draw do
     resources :relationships, only: [:create, :destroy]
   end
    
+  resources :jobs
+  
   resources :origins
+  
+  resources :genres
 
   resources :raspas
 

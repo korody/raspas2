@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130715020018) do
+ActiveRecord::Schema.define(version: 20130719131120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,6 @@ ActiveRecord::Schema.define(version: 20130715020018) do
     t.string   "name"
     t.string   "username"
     t.string   "aka"
-    t.string   "job"
     t.text     "bio"
     t.date     "dob"
     t.date     "dod"
@@ -34,6 +33,32 @@ ActiveRecord::Schema.define(version: 20130715020018) do
     t.datetime "reset_token_sent_at"
     t.integer  "fans_count",          default: 0
     t.integer  "idols_count",         default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "experiences", force: true do |t|
+    t.integer  "author_id"
+    t.integer  "job_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "genres", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "genrings", force: true do |t|
+    t.integer  "origin_id"
+    t.integer  "genre_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "jobs", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -67,8 +92,6 @@ ActiveRecord::Schema.define(version: 20130715020018) do
   create_table "reaspas", force: true do |t|
     t.integer  "raspa_id"
     t.integer  "author_id"
-    t.integer  "original_author"
-    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
