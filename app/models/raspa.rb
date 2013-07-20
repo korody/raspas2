@@ -1,5 +1,8 @@
 # encoding: utf-8
 class Raspa < ActiveRecord::Base
+  attr_accessor :original_author
+
+  validates_presence_of :author
 
   default_scope { order('raspas.updated_at desc') }
   
@@ -8,8 +11,6 @@ class Raspa < ActiveRecord::Base
   scope :raspas_of_scope, lambda { |author| raspas_of(author) }
   scope :reaspas_of_scope, lambda { |author| reaspas_of(author) }
   scope :wall_of, lambda { |author| raspas_of_scope(author).concat(reaspas_of_scope(author)) }
-
-
 
   scope :trending, lambda { |num = nill| where('started_trending > ?', 1.day.ago).
                             order('mentions desc').

@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20130719131120) do
     t.datetime "reset_token_sent_at"
     t.integer  "fans_count",          default: 0
     t.integer  "idols_count",         default: 0
+    t.boolean  "claimed",             default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

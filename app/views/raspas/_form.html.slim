@@ -5,5 +5,5 @@
       fieldset
         = f.text_area :quote, rows: 4, class: 'input-large', placeholder: "escreva sua raspa aqui"
         = f.text_field :note, class: 'input-large input-block-level', placeholder: "informações extras"
-        / = f.text_field :from_user, type: 'hidden', class: 'input-large', value:current_user.name if signed_in?
+        = f.text_field :original_author, class: 'input-large', placeholder: "essa raspa é de outro autor?"
       = f.submit 'enviar', class: 'btn btn-block btn-large btn-link'

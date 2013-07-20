@@ -20,10 +20,10 @@ Raspas::Application.routes.draw do
   
   resources :genres
 
-  resources :raspas
+  resources :raspas do
+    resources :reaspas
+  end
 
   resources :tags
-  
-  resources :reaspas
 
 end

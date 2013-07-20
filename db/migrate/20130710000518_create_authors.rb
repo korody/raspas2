@@ -17,6 +17,7 @@ class CreateAuthors < ActiveRecord::Migration
       t.datetime :reset_token_sent_at
       t.integer :fans_count, default: 0
       t.integer :idols_count, default: 0
+      t.boolean :claimed, default: false
 
       t.timestamps
     end

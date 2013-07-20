@@ -1,0 +1,4 @@
+var reaspa = $("#<%= dom_id @raspa %>");
+
+reaspa.html('<%= j render("form", raspa: @raspa) %>');
+reaspa.html(reaspa.find('.reaspa_form').html());

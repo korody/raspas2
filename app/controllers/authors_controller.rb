@@ -31,9 +31,13 @@ class AuthorsController < ApplicationController
 
     def update
       @author = current_user
+      @author.attributes = author_params
+      if @author.email.present? && @author.password_digest.present?
+        @author.update_attributes(claimed: 'TRUE')
+      end
       if @author.update_attributes(author_params)
         flash[:success] = "atualizado"
-        redirect_to back: true
+        redirect_to authors_raspas_path(@author.username)
       else
         render 'edit'
       end
@@ -47,6 +51,6 @@ class AuthorsController < ApplicationController
     private
 
     def author_params
-      params.require(:author).permit(:name, :email, :password, :username, :bio, :type)
+      params.require(:author).permit(:name, :email, :password, :username, :bio, :has_job, :claimed)
     end
 end

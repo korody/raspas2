@@ -1,5 +1,11 @@
 class Author < ActiveRecord::Base
-  has_secure_password #(validations: false)
+  attr_accessor :has_job
+  has_secure_password(validations: false)
+
+  validates_presence_of :name
+  validates_presence_of :password_digest, :password, if: :claimed?
+  validates_length_of :password, minimum: 4, if: :claimed?
+  validates :email, presence: true, length: { maximum: 60 }, email_format: true, uniqueness: { case_sensitive: false }, if: :claimed?
 
   has_many :raspas
   has_many :origins
@@ -38,12 +44,20 @@ class Author < ActiveRecord::Base
     relationships.find_by(idol_id: author).destroy
   end
 
+  def reciter?(raspa)
+    reaspas.find_by(raspa_id: raspa)
+  end
+
+  def recite!(raspa)
+    reaspas.create!(raspa_id: raspa.id)
+  end
+
+  def uncite!(raspa)
+    reaspas.find_by(raspa_id: raspa).destroy
+  end
+
   # def to_s
   #   "#{first_name}"
-  # end
-
-  # def to_param
-  #   "#{id}-#{name.parameterize}"
   # end
 
 end

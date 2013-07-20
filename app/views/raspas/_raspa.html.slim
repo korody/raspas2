@@ -9,7 +9,8 @@
       = icon_link_to 'pencil', edit_raspa_path(raspa), title: 'editar', post: @new_raspa
       = icon_link_to 'trash', raspa, method: :delete, title: 'apagar'
     - else
-      = link_to "recitar", reaspas_path(raspa_id: raspa), method: :post, class: 'btn btn-info'
+      = render 'reaspas/form', raspa: raspa
+      / = link_to "recitar", reaspas_path(raspa_id: raspa), method: :post, class: 'btn btn-info'
     / REVISE for performance and best-practice ------------
     br
     - raspa.reaspas.last(1).each do |a|
