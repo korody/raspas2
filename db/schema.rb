@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130719131120) do
+ActiveRecord::Schema.define(version: 20130721144151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,21 +19,15 @@ ActiveRecord::Schema.define(version: 20130719131120) do
   create_table "authors", force: true do |t|
     t.string   "name"
     t.string   "username"
-    t.string   "aka"
     t.text     "bio"
     t.date     "dob"
-    t.date     "dod"
-    t.string   "email"
     t.string   "social"
     t.string   "website"
-    t.string   "type"
-    t.string   "password_digest"
+    t.integer  "fans_count",     default: 0
+    t.integer  "idols_count",    default: 0
+    t.integer  "profile_id"
+    t.string   "profile_type"
     t.string   "remember_token"
-    t.string   "reset_token"
-    t.datetime "reset_token_sent_at"
-    t.integer  "fans_count",          default: 0
-    t.integer  "idols_count",         default: 0
-    t.boolean  "claimed",             default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -74,6 +68,13 @@ ActiveRecord::Schema.define(version: 20130719131120) do
     t.string   "link"
     t.integer  "author_id"
     t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "public_profiles", force: true do |t|
+    t.string   "aka"
+    t.date     "dod"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -119,6 +120,15 @@ ActiveRecord::Schema.define(version: 20130719131120) do
 
   create_table "tags", force: true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_profiles", force: true do |t|
+    t.string   "email"
+    t.string   "password_digest"
+    t.string   "reset_token"
+    t.datetime "reset_token_sent_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

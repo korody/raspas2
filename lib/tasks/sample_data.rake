@@ -1,6 +1,6 @@
 namespace :db do
   desc "Fill database with sample data"
-  task :populate => :environment do
+  task populate: :environment do
     Rake::Task['db:reset'].invoke
     make_authors
     make_jobs
@@ -17,7 +17,8 @@ def make_authors
     name  = Faker::Name.name
     email = "aprendiz#{n+1}@raspas.com"
     password = "kiwi123"
-    Author.create!(name: name, email: email, password: password)
+    profile = UserProfile.create!(email: email, password: password)
+    Author.create!(name: name, profile: profile)
   end
 end
 

@@ -1,3 +1,14 @@
+extract tags, origins, jobs
+avatar
+mailers
+comments
+favourites
+similar authors
+translations
+
+
+
+
 trendind_period = 1.week
 
 before_Create :set_trend_ending

@@ -7,8 +7,9 @@ class SessionsController < ApplicationController
   end
 
   def create
-    author = Author.find_by(email: params[:email])
-    if author && author.authenticate(params[:password])
+    user = UserProfile.find_by(email: params[:email])
+    author = user.author if user
+    if author && user.authenticate(params[:password])
       sign_in author
       redirect_to authors_raspas_path(author.username)
     else
@@ -16,6 +17,7 @@ class SessionsController < ApplicationController
       render 'new'
     end
   end
+  # REVISE create method
 
   def destroy
     sign_out

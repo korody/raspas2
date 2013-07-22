@@ -1,0 +1,15 @@
+- provide :title, "nova senha"
+.container
+  .form-pod.span4
+    = form_for @user, url: password_reset_path(params[:id]), html: { class: 'minimal block-level' } do |f|
+      .modal-header
+        h1 nova senha
+      .modal-body
+        legend Que tal o nome do seu cachorro?
+        = render 'error_messages', object: @user
+        = f.label :password, "nova senha"
+        = f.password_field :password, autofocus: true
+        / = f.label :password_confirmation, "confirmar senha"
+        / = f.password_field :password_confirmation
+      .modal-footer
+        = submit_tag "pronto", class: 'btn btn-success', 'data-disable-with' => "processando..."

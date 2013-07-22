@@ -1,0 +1,13 @@
+.form-pod
+  = form_tag password_resets_path, remote: request.xhr?, class: 'block-level' do
+    .modal-header
+      - if request.xhr?
+        button.close type="button" data-dismiss="modal" aria-hidden="true" &times;
+      h3 nova senha
+    .modal-body
+      legend Esqueceu? A gente dá um jeitinho.
+      = render partial: 'flash', object: flash
+      = text_field_tag :email, params[:email], class: 'input-large', autofocus: true, placeholder: 'e-mail'
+    .modal-footer
+      = submit_tag "enviar", class: 'btn btn-success fl', 'data-disable-with' => "enviando..."
+      = link_to "ah! Lembrou a senha é?", signin_path, remote: request.xhr?

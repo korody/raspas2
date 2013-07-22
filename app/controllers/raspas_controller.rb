@@ -29,7 +29,7 @@ class RaspasController < ApplicationController
         render 'edit'
       end
     else
-      some_author = Author.where(name: @new_raspa.original_author).first_or_create
+      some_author = Author.where(name: @new_raspa.original_author).first_or_create(profile: PublicProfile.create!)
       @new_raspa.update_attributes(author_id: some_author.id)
       if @new_raspa.save
         current_user.reaspas.create(raspa: @new_raspa)

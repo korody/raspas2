@@ -1,11 +1,7 @@
 class Author < ActiveRecord::Base
   attr_accessor :has_job
-  has_secure_password(validations: false)
-
+  
   validates_presence_of :name
-  validates_presence_of :password_digest, :password, if: :claimed?
-  validates_length_of :password, minimum: 4, if: :claimed?
-  validates :email, presence: true, length: { maximum: 60 }, email_format: true, uniqueness: { case_sensitive: false }, if: :claimed?
 
   has_many :raspas
   has_many :origins
@@ -22,10 +18,13 @@ class Author < ActiveRecord::Base
   has_many :reaspas, dependent: :destroy
   has_many :citations, through: :reaspas, source: :raspa
 
+  belongs_to :profile, polymorphic: true
+
+  delegate :legend?, :email, :password, :password_digest, :become_user, to: :profile, allow_nil: true
+
   before_create do
     self.remember_token = SecureRandom.urlsafe_base64
-    self.email.downcase! if email
-    self.username = name.gsub(/\s+/, "")
+    self.username = name.gsub(/\s+/, "").downcase
   end
 
   def wall

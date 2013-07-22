@@ -1,26 +1,25 @@
 .col.col-lg-3
   section
-    = render 'error_messages', object: @author
-    = form_for @author do |f|
+    = render 'error_messages', object: @user
+    = form_for @user do |f|
       fieldset
         / = f.select :guest, [['visitante', true], ['membro', false]], class: 'input-large' if @author.guest?
         h4 QUEM É VOCÊ?
-        - unless @author.claimed?
+        - if @user.legend? && !@user.new_record?
             h5 este perfil é público. 
             h5 adicione e-mail e senha 
             h5 para torná-lo privado.
         hr
-        = f.text_field :name, class: 'input-large', placeholder: 'NOME'
-        -  unless @author.new_record?
-          = f.text_field :username, class: 'input-large', placeholder: 'APELIDO' 
-          = f.text_field :aka, class: 'input-large', placeholder: 'HETERÔNIMO' 
+        - unless @user.new_record?
+          = f.text_field :name, class: 'input-large', placeholder: 'NOME'
+          = f.text_field :username, class: 'input-large', placeholder: 'NOME'
+          = f.text_field :aka, class: 'input-large', placeholder: 'HETERÔNIMO' if @user.legend? 
           = f.text_field :has_job, class: 'input-large', placeholder: 'ATUAÇÃO' 
           = f.text_area :bio, rows: 4, class: 'input-large', placeholder: 'BIOGRAFIA' 
           = select_year Date.today, start_year: Time.now.year, end_year: Time.now.year - 1000, field_name: :dob, prefix: :author
-          = select_year Date.today, start_year: Time.now.year, end_year: Time.now.year - 1000, field_name: :dod, prefix: :author
+          = select_year Date.today, start_year: Time.now.year, end_year: Time.now.year - 1000, field_name: :dod, prefix: :author if @user.legend?
           = f.text_field :social, class: 'input-large', placeholder: 'SOCIAL' 
           = f.text_field :website, class: 'input-large', placeholder: 'WEBSITE' 
-          = f.text_field :type, class: 'input-large', placeholder: 'TIPO' 
         = f.text_field :email, class: 'input-large', placeholder: 'E-MAIL'
         = f.password_field :password, class: 'input-large', placeholder: 'SENHA'
       = f.submit 'CRIE-SE', class: 'btn btn-info btn-large btn-block'

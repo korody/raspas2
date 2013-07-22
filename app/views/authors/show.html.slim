@@ -1,4 +1,4 @@
 .col.col-lg-10
   section
-    - @wall.each do |item|
-      = render 'raspas/raspa', raspa: item
+    - @raspas.each do |raspa|
+      = render 'raspas/raspa', raspa: raspa

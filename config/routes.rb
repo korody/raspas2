@@ -10,8 +10,14 @@ Raspas::Application.routes.draw do
 
   resources :sessions
 
+  resources :password_resets
+
   resources :authors do
     resources :relationships, only: [:create, :destroy]
+  end
+
+  resources :user_profiles do
+    resources :authors
   end
    
   resources :jobs
