@@ -1,7 +1,8 @@
+# encoding: utf-8
 class Author < ActiveRecord::Base
-  attr_accessor :has_job
   
   validates_presence_of :name
+  validates_format_of :username, with: /^[A-Za-z\d_]+$/, multiline: true, message: "só pode conter letras e números, sem espaços.", on: :update
 
   has_many :raspas
   has_many :origins
@@ -20,11 +21,15 @@ class Author < ActiveRecord::Base
 
   belongs_to :profile, polymorphic: true
 
-  delegate :legend?, :email, :password, :password_digest, :become_user, to: :profile, allow_nil: true
+  delegate :legend?, :email, :password, :password_digest, :aka, :dod, :become_user, to: :profile, allow_nil: true
 
   before_create do
     self.remember_token = SecureRandom.urlsafe_base64
     self.username = name.gsub(/\s+/, "").downcase
+  end
+
+  before_update do
+    self.username = username.downcase
   end
 
   def wall
@@ -53,6 +58,16 @@ class Author < ActiveRecord::Base
 
   def uncite!(raspa)
     reaspas.find_by(raspa_id: raspa).destroy
+  end
+
+  def has_jobs
+    jobs.map(&:name).join(", ")
+  end
+
+  def has_jobs=(names)
+    self.jobs = names.split(",").map do |j|
+      Job.where(name: j.strip).first_or_create!
+    end
   end
 
   # def to_s

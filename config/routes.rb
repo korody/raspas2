@@ -7,6 +7,7 @@ Raspas::Application.routes.draw do
   get '/signin', to: 'sessions#new'
   get '/signup', to: 'authors#new'
   get '/:username', to: 'authors#show', as: 'authors_raspas'
+  get '/:username/feed', to: 'authors#feed', as: 'feed'
 
   resources :sessions
 
@@ -14,12 +15,17 @@ Raspas::Application.routes.draw do
 
   resources :authors do
     resources :relationships, only: [:create, :destroy]
+    resources :user_profiles
   end
 
   resources :user_profiles do
     resources :authors
   end
-   
+
+  resources :public_profiles do
+    resources :authors
+  end
+
   resources :jobs
   
   resources :origins

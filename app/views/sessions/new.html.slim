@@ -8,4 +8,5 @@
         = password_field_tag :password, value = nil, { class: 'input-large', placeholder: 'SENHA' }
       = submit_tag "ADENTRE-SE", class: 'btn btn-large btn-block btn-success'
   .module
-    p = link_to "Esqueceu sua senha?", new_password_reset_path
+    p.pull-right = link_to "esqueceu a senha?", new_password_reset_path
+    p = link_to "cadastre-se", signup_path

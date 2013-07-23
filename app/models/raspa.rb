@@ -1,8 +1,12 @@
 # encoding: utf-8
 class Raspa < ActiveRecord::Base
-  attr_accessor :original_author
+  attr_accessor :original_author, :origin_name
+  attr_writer :origin_name
 
   validates_presence_of :author
+
+  before_validation :normalize
+  before_save :assign_origin
 
   default_scope { order('raspas.updated_at desc') }
   
@@ -17,9 +21,8 @@ class Raspa < ActiveRecord::Base
                             limit(num) }
 
   belongs_to :author
-  belongs_to :raspa
-
   belongs_to :origin
+  belongs_to :raspa
 
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
@@ -29,7 +32,13 @@ class Raspa < ActiveRecord::Base
 
   has_many :reaspas, dependent: :destroy
   has_many :citations, through: :reaspas, source: :raspa
-  # has_many :authors, through: :reaspas
+  has_many :citers, through: :reaspas, source: :author
+
+  def normalize
+    if quote
+      self.quote = quote.gsub('"', '').gsub("'", '`').gsub("\r\n", ' ')
+    end  
+  end
 
   def self.reaspas_of(author)
     Raspa.joins(:reaspas)
@@ -39,34 +48,36 @@ class Raspa < ActiveRecord::Base
     Raspa.where(author: author)
   end
 
-  # def self.citations_of(author)
-  #   citations_ids = %(SELECT raspa_id FROM reaspas
-  #                         WHERE author_id = :author_id)
-  #   where("id IN (#{citations_ids}) OR author_id = :author_id",
-  #         { author_id: author })
-  # end
+  def tag_list
+    tags.map(&:name).join(", ")
+  end
 
-  # belongs_to :original_raspa,
-  #             class_name: 'Raspa',
-  #             foreign_key: :raspa_id,
-  #             counter_cache: :citacoes_count
+  def tag_list=(names)
+    self.tags = names.split(",").map do |n|
+      Tag.where(name: n.strip).first_or_create!
+    end
+  end
 
-  # has_many :citacoes,
-  #           class_name: 'Raspa',
-  #           foreign_key: :raspa_id
-
-
-  # def citacao_por(citante)
-  #   if self.user == citante
-  #     "Esta raspa é mesmo muito boa! Infelizmente não é possível citar sua própria raspa. : /"
-  #   elsif self.raspas.where(user_id: citante.id).present?
-  #     "Queria eu citar esta raspa mil vezes! Mas só é possível uma vez..."
-  #   else
-  #     current_user.raspas.create(
-  #       status: "reaspa #{raspa.author.name}: #{raspa.status}",
-  #       raspa_original: @raspa )
-  #     "raspa citada!"          
-  #   end
-  # end
+  def assign_origin
+    if origin_name
+      origin = Origin.first_or_create!(title: origin_name.strip)
+      # if origin
+      #   if origin.user_id.blank?
+      #     origin.update_attributes(user_id: user.id)
+      #   end
+      #   if !origin_type.blank?
+      #     origin.update_attributes(type: origin_type)
+      #   else
+      #     if origin.type.blank?
+      #       origin.update_attributes(type: 'Other')
+      #     end
+      #   end  
+      #   if !author_name.blank?
+      #     origin.update_attributes(author_id: @some_author.id)
+      #   end
+      # end
+      self.origin_id = origin ? origin.id : 0
+    end
+  end
 
 end

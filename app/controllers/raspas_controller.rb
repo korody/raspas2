@@ -29,17 +29,19 @@ class RaspasController < ApplicationController
         render 'edit'
       end
     else
-      some_author = Author.where(name: @new_raspa.original_author).first_or_create(profile: PublicProfile.create!)
-      @new_raspa.update_attributes(author_id: some_author.id)
+      @some_author = Author.where(name: @new_raspa.original_author).first_or_create(profile: PublicProfile.create!)
+      @new_raspa.update_attributes(author_id: @some_author.id)
       if @new_raspa.save
         current_user.reaspas.create(raspa: @new_raspa)
-        flash.now[:success] = "Você adicionou uma raspa de #{some_author.name}! Obrigado!"
-        redirect_to authors_raspas_path(some_author.username)
+        flash.now[:success] = "Você adicionou uma raspa de #{@some_author.name}! Obrigado!"
+        redirect_to authors_raspas_path(@some_author.username)
       else
         render 'edit'
       end
     end
   end
+
+  # REVISE for skinny controller
 
   def edit
     @new_raspa = Raspa.find(params[:id])
@@ -60,7 +62,7 @@ class RaspasController < ApplicationController
   private
 
   def raspa_params
-    params.require(:raspa).permit(:quote, :note, :author_id, :original_author)
+    params.require(:raspa).permit(:quote, :note, :author_id, :original_author, :tag_list, :origin_name)
   end
 
   def authorized_user

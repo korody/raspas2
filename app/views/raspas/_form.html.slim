@@ -4,6 +4,8 @@
     = form_for @new_raspa do |f|
       fieldset
         = f.text_area :quote, rows: 4, class: 'input-large', placeholder: "escreva sua raspa aqui"
-        = f.text_field :note, class: 'input-large input-block-level', placeholder: "informações extras"
+        = f.text_field :origin_name, class: 'input-large', placeholder: "origem desta raspa"
+        = f.text_field :tag_list, class: 'input-large', placeholder: "temas (separe temas com vírgula)"
         = f.text_field :original_author, class: 'input-large', placeholder: "essa raspa é de outro autor?"
+        = f.text_field :note, class: 'input-large input-block-level', placeholder: "informações extras"
       = f.submit 'enviar', class: 'btn btn-block btn-large btn-link'

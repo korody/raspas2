@@ -13,8 +13,6 @@ class UserProfile < ActiveRecord::Base
 
   accepts_nested_attributes_for :author
 
-  delegate :name, :username, :remember_token, to: :author, allow_nil: true
-
   def legend?
     false
   end
@@ -25,5 +23,6 @@ class UserProfile < ActiveRecord::Base
     save!(validate: false)
     UserMailer.password_reset(self).deliver
   end
+
 
 end

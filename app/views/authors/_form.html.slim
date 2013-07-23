@@ -1,26 +1,32 @@
 .col.col-lg-3
   section
-    = render 'error_messages', object: @user
-    = form_for @user do |f|
+    = render 'error_messages', object: @profile
+    = form_for @profile do |p|
       fieldset
-        / = f.select :guest, [['visitante', true], ['membro', false]], class: 'input-large' if @author.guest?
-        h4 QUEM É VOCÊ?
-        - if @user.legend? && !@user.new_record?
+        h4 RECRIE-SE!
+        / - if @author.legend? && !@author.new_record?
             h5 este perfil é público. 
             h5 adicione e-mail e senha 
             h5 para torná-lo privado.
         hr
-        - unless @user.new_record?
-          = f.text_field :name, class: 'input-large', placeholder: 'NOME'
-          = f.text_field :username, class: 'input-large', placeholder: 'NOME'
-          = f.text_field :aka, class: 'input-large', placeholder: 'HETERÔNIMO' if @user.legend? 
-          = f.text_field :has_job, class: 'input-large', placeholder: 'ATUAÇÃO' 
-          = f.text_area :bio, rows: 4, class: 'input-large', placeholder: 'BIOGRAFIA' 
-          = select_year Date.today, start_year: Time.now.year, end_year: Time.now.year - 1000, field_name: :dob, prefix: :author
-          = select_year Date.today, start_year: Time.now.year, end_year: Time.now.year - 1000, field_name: :dod, prefix: :author if @user.legend?
-          = f.text_field :social, class: 'input-large', placeholder: 'SOCIAL' 
-          = f.text_field :website, class: 'input-large', placeholder: 'WEBSITE' 
-        = f.text_field :email, class: 'input-large', placeholder: 'E-MAIL'
-        = f.password_field :password, class: 'input-large', placeholder: 'SENHA'
-      = f.submit 'CRIE-SE', class: 'btn btn-info btn-large btn-block'
-      / = link_to 'APAGUE-SE', current_user, method: :delete, class: 'btn btn-default btn-large btn-block'
+        = p.fields_for :author do |a|
+          = a.text_field :name, class: 'input-large', placeholder: 'NOME'
+          = a.text_field :username, class: 'input-large', placeholder: 'USERNAME'
+          = a.text_field :has_jobs, class: 'input-large', placeholder: 'ATUAÇÃO (separe áreas com vírgula)' 
+          = a.date_field :dob, class: 'input-large', placeholder: 'DOB' 
+          - if @profile.legend?
+            = p.date_field :dod, class: 'input-large', placeholder: 'DOD' 
+            = p.text_field :aka, class: 'input-large', placeholder: 'HETERÔNIMO'
+          = a.text_field :social, class: 'input-large', placeholder: 'SOCIAL' 
+          = a.text_field :website, class: 'input-large', placeholder: 'WEBSITE' 
+          = a.text_area :bio, rows: 4, class: 'input-large', placeholder: 'BIOGRAFIA' 
+          / - year = @user.dob.year rescue nil 
+          / = text_field_tag "author[dob]", year, class: 'input-large', placeholder: 'ANO NASCIMENTO' 
+          / = select_year Date.today, start_year: Time.now.year, end_year: Time.now.year - 1000, field_name: :dob, prefix: :author
+          / = select_year Date.today, start_year: Time.now.year, end_year: Time.now.year - 1000, field_name: :dod, prefix: :author
+        - unless @profile.legend?
+          = p.text_field :email, class: 'input-large', placeholder: 'E-MAIL'
+          = p.password_field :password, class: 'input-large', placeholder: 'SENHA'
+      = p.submit 'PRONTO', class: 'btn btn-info btn-large btn-block'
+      = link_to 'APAGUE-SE', @profile, method: :delete, confirm: "têm certeza que deseja apagar seu conhecimento compartilhado?", class: 'btn btn-default btn-large btn-block' unless @profile.new_record?
+      = link_to "já possui uma conta?", signin_path unless signed_in?
