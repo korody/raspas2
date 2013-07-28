@@ -1,0 +1,17 @@
+.col.col-lg-3
+  section
+    = render 'error_messages', object: @origin
+    = form_for @origin do |o|
+      fieldset
+        h4 CRIAR ORIGEM!
+        hr
+        = o.text_field :title, class: 'input-large', placeholder: 'TÍTULO'
+        = o.text_field :original_title, class: 'input-large', placeholder: 'TÍTULO ORIGINAL'
+        = o.text_field :author_tokens, data: {load: @origin.authors.map(&:attributes)}
+        = o.text_field :genre_tokens, data: {load: @origin.genres.map(&:attributes)}
+        = o.date_field :publication, class: 'input-large', placeholder: 'DATA LANÇAMENTO'
+        = o.text_field :content, class: 'input-large', placeholder: 'CONTEÚDO'
+        = o.text_field :info, class: 'input-large', placeholder: 'INFO EXTRA'
+        = o.text_field :video, class: 'input-large', placeholder: 'VIDEO'
+        = o.text_field :link, class: 'input-large', placeholder: 'LINK EXTERNO'
+      = o.submit 'PRONTO', class: 'btn btn-info btn-large btn-block'

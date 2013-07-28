@@ -1,0 +1,5 @@
+fieldset
+  = form_for [@commentable, @comment] do |c|
+    = c.text_area :content, rows: 4, class: 'input-large', placeholder: 'COMENTÁRIOS'
+    = c.submit 'ENVIAR', class: 'btn btn-info btn-large btn-block'
+= render @comments

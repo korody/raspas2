@@ -1,0 +1,4 @@
+= form_for Attachment.new, url: author_attachments_path(@author.id) do |i|
+  = i.file_field :image, multiple: true, class: 'btn-large btn-info'
+
+= render 'attachments/progress_bar'

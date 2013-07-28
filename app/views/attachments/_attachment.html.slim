@@ -1,0 +1,6 @@
+= div_for attachment
+  .thumbnail.pull-left
+    = image_tag attachment.image_url(:medium).to_s
+    = best_in_place attachment, :note
+    br
+    = link_to "apagar", author_attachment_path(@author, attachment), method: "delete", remote: true

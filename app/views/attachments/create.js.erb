@@ -1,0 +1,6 @@
+<% if @attachment.new_record? %>
+  alert("pera que deu pêra! <%= j @attachment.errors.full_messages.join(', ').html_safe %>");
+<% else %>
+  $(".attachments-list").append("<%= j render @attachment, image: @attachment %>");
+<% end %>
+
