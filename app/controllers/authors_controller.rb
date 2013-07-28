@@ -1,10 +1,19 @@
 # encoding: utf-8
 class AuthorsController < ApplicationController
+  respond_to :html, :json
+
+  before_filter :authenticate, only: [:edit, :update, :destroy]
+  before_filter :correct_user, only: [:edit, :update, :destroy, :feed]
   
   layout 'authors_sidebar', except: [:new, :edit, :update]
 
   def index
-    @authors = Author.all(order: :name)
+    @authors = Author.order(:name)
+    author_list = @authors.where("name ilike ?", "%#{params[:q]}%").map {|a| {id: a.id, name: a.name} } 
+    author_query = author_list.empty? ? [{id: "<<<#{params[:q]}>>>", name: "NOVO PENSADOR: \"#{params[:q]}\""}] : author_list
+    respond_with(@author) do |format|
+      format.json { render json: author_query }
+    end
   end
 
   def show
@@ -22,6 +31,7 @@ class AuthorsController < ApplicationController
   end
 
   def create
+    @attachment = Attachment.new
     @author = Author.create(author_params)
   end
 
@@ -48,6 +58,14 @@ class AuthorsController < ApplicationController
   private
 
   def author_params
-    params.require(:author).permit(:name, :username, :bio, :has_jobs, :profile, :dob, :social, :website )
+    params.require(:author).permit(:name, :username, :bio, :profile, :dob, :social, :website)
   end
+
+  def correct_user
+    @author = Author.find(params[:id])
+    unless @author.legend?
+      redirect_to(root_path) unless current_user?(@author)
+    end
+  end
+
 end

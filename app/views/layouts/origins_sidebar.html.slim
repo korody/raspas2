@@ -2,7 +2,13 @@
   .col.col-lg-2
     .sidebar
       = link_to (image_tag "logo.png"), root_path
+      = link_to "editar", edit_origin_path(@origin), class: 'btn btn-info'
       h3 = @origin.title
+      h3 = @origin.original_title
+      p = raw @origin.authors.pluck(:name).map { |a| link_to a, author_path(a) }.join(', ')
+      h3 = @origin.publication
+      h3 = @origin.info
+      h3 = @origin.link
       p = raw @origin.genres.pluck(:name).map { |g| link_to g, genre_path(g) }.join(', ')
         
 = render file: 'layouts/application'

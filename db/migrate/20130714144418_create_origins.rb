@@ -8,8 +8,7 @@ class CreateOrigins < ActiveRecord::Migration
       t.text :info
       t.string :video
       t.string :link
-      t.integer :author_id
-      t.string :type
+      t.string :origin_type
 
       t.timestamps
     end

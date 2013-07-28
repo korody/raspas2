@@ -4,7 +4,7 @@ class UserProfile < ActiveRecord::Base
 
   has_secure_password
 
-  validates_length_of :password, minimum: 4
+  validates :password, presence: { on: :create }, length: { minimum: 4, allow_blank: true }
   validates :email, presence: true, length: { maximum: 60 }, email_format: true, uniqueness: { case_sensitive: false }
 
   before_create do

@@ -1,1 +1,7 @@
-= render 'raspa', raspa: @raspa
+- provide :title, "raspa de #{@raspa.author}"
+.col.col-lg-10
+  section#wall
+    = render 'raspa', raspa: @raspa
+  section#comments
+    = render 'comments/comments'
+

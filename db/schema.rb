@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130721144151) do
+ActiveRecord::Schema.define(version: 20130726233724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attachments", force: true do |t|
+    t.text     "note"
+    t.string   "image"
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "attachments", ["attachable_id"], name: "index_attachments_on_attachable_id"
 
   create_table "authors", force: true do |t|
     t.string   "name"
@@ -31,6 +42,27 @@ ActiveRecord::Schema.define(version: 20130721144151) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "authorships", force: true do |t|
+    t.integer  "author_id"
+    t.integer  "origin_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "authorships", ["author_id"], name: "index_authorships_on_author_id"
+  add_index "authorships", ["origin_id"], name: "index_authorships_on_origin_id"
+
+  create_table "comments", force: true do |t|
+    t.integer  "author_id"
+    t.text     "content"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
 
   create_table "experiences", force: true do |t|
     t.integer  "author_id"
@@ -67,7 +99,7 @@ ActiveRecord::Schema.define(version: 20130721144151) do
     t.string   "video"
     t.string   "link"
     t.integer  "author_id"
-    t.string   "type"
+    t.string   "origin_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

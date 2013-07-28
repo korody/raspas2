@@ -2,8 +2,6 @@ class PublicProfilesController < ApplicationController
 
   def create
     @profile = Author.create! { |u| u.profile = PublicProfile.create! }
-    sign_in @profile
-    redirect_to root_path
   end
 
   def edit
@@ -24,7 +22,7 @@ class PublicProfilesController < ApplicationController
   private
 
   def public_params
-    params.require(:public_profile).permit(:aka, :dod, author_attributes: [:id, :name, :username, :dob, :has_jobs, :social, :website, :bio])
+    params.require(:public_profile).permit(:aka, :dod, author_attributes: [:id, :name, :username, :dob, :has_jobs, :social, :website, :bio, attachments_attributes: [:id, :image, :note]])
   end
 
 end

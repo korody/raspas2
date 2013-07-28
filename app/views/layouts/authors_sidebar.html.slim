@@ -1,10 +1,11 @@
 - content_for(:sidebar) do
   .col.col-lg-2
     .sidebar
-      = link_to (image_tag "logo.png"), root_path
+      - @author.attachments.shuffle.first(1).each do |a|
+        = link_to image_tag(a.image_url(:profile)).to_s, @author
       - if signed_in?
         = link_to current_user.name, authors_raspas_path(current_user.username), class: 'btn btn-primary'
-        = link_to "editar", edit_author_path(@author), class: 'btn btn-info'
+        = link_to "editar", edit_author_path(current_user), class: 'btn btn-info'
         = link_to "sair", signout_path, method: :delete, class: 'btn btn-default'
         = link_to "wall", feed_path(current_user.username), class: 'btn btn-default'
       - else

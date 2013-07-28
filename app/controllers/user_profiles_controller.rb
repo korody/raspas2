@@ -35,7 +35,8 @@ class UserProfilesController < ApplicationController
   private
 
   def user_params
-    params.require(:user_profile).permit(:email, :password, author_attributes: [:id, :name, :username, :dob, :has_jobs, :social, :website, :bio])
+    params.require(:user_profile).permit(:email, :password, author_attributes: [:id, :name, :username, :dob, :social, :website, :bio, :job_tokens, attachments_attributes: [:id, :note, :image, :image, :_destroy]])
+    # params.require(:user_profile).permit!
   end
 
 end

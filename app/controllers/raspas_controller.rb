@@ -1,7 +1,7 @@
 # encoding: utf-8
 class RaspasController < ApplicationController
   before_action :authenticate, only: [:edit, :update, :create]
-  before_action :authorized_user, only: [:edit, :update, :destroy]
+  # before_action :authorized_user, only: [:edit, :update, :destroy]
 
   layout 'raspas_sidebar'
 
@@ -13,6 +13,9 @@ class RaspasController < ApplicationController
 
   def show
     @raspa = Raspa.find(params[:id])
+    @commentable = @raspa
+    @comments = @commentable.comments
+    @comment = Comment.new
   end
 
   def new
@@ -62,7 +65,7 @@ class RaspasController < ApplicationController
   private
 
   def raspa_params
-    params.require(:raspa).permit(:quote, :note, :author_id, :original_author, :tag_list, :origin_name)
+    params.require(:raspa).permit(:quote, :note, :author_id, :original_author, :tag_tokens, :origin_name)
   end
 
   def authorized_user

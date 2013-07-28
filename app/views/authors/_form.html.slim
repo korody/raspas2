@@ -1,18 +1,20 @@
 .col.col-lg-3
   section
     = render 'error_messages', object: @profile
-    = form_for @profile do |p|
-      fieldset
-        h4 RECRIE-SE!
-        / - if @author.legend? && !@author.new_record?
-            h5 este perfil é público. 
-            h5 adicione e-mail e senha 
-            h5 para torná-lo privado.
-        hr
+    fieldset
+      h4 RECRIE-SE!
+      / - if @author.legend? && !@author.new_record?
+          h5 este perfil é público. 
+      hr
+      = render 'attachments/form', author: @author
+      .attachments-list
+        - @author.attachments.each do |attachment|
+          = render 'attachments/attachment', attachment: attachment
+      = form_for @profile, html: { multipart: true } do |p|
         = p.fields_for :author do |a|
           = a.text_field :name, class: 'input-large', placeholder: 'NOME'
           = a.text_field :username, class: 'input-large', placeholder: 'USERNAME'
-          = a.text_field :has_jobs, class: 'input-large', placeholder: 'ATUAÇÃO (separe áreas com vírgula)' 
+          = a.text_field :job_tokens, data: {load: @author.jobs.map(&:attributes)}
           = a.date_field :dob, class: 'input-large', placeholder: 'DOB' 
           - if @profile.legend?
             = p.date_field :dod, class: 'input-large', placeholder: 'DOD' 
@@ -24,9 +26,9 @@
           / = text_field_tag "author[dob]", year, class: 'input-large', placeholder: 'ANO NASCIMENTO' 
           / = select_year Date.today, start_year: Time.now.year, end_year: Time.now.year - 1000, field_name: :dob, prefix: :author
           / = select_year Date.today, start_year: Time.now.year, end_year: Time.now.year - 1000, field_name: :dod, prefix: :author
-        - unless @profile.legend?
+        - unless @profile.legend? 
           = p.text_field :email, class: 'input-large', placeholder: 'E-MAIL'
-          = p.password_field :password, class: 'input-large', placeholder: 'SENHA'
-      = p.submit 'PRONTO', class: 'btn btn-info btn-large btn-block'
-      = link_to 'APAGUE-SE', @profile, method: :delete, confirm: "têm certeza que deseja apagar seu conhecimento compartilhado?", class: 'btn btn-default btn-large btn-block' unless @profile.new_record?
+          / = p.password_field :password, class: 'input-large', placeholder: 'SENHA'
+        = p.submit 'PRONTO', class: 'btn btn-info btn-large btn-block'
+        = link_to 'APAGUE-SE', @profile, method: :delete, data: { confirm: "têm certeza que deseja apagar seu conhecimento compartilhado?" }, class: 'btn btn-default btn-large btn-block' unless @profile.new_record?
       = link_to "já possui uma conta?", signin_path unless signed_in?

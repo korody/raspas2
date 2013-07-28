@@ -2,6 +2,7 @@
 class Raspa < ActiveRecord::Base
   attr_accessor :original_author, :origin_name
   attr_writer :origin_name
+  attr_reader :tag_tokens
 
   validates_presence_of :author
 
@@ -34,6 +35,10 @@ class Raspa < ActiveRecord::Base
   has_many :citations, through: :reaspas, source: :raspa
   has_many :citers, through: :reaspas, source: :author
 
+  has_many :attachments, as: :attachable, dependent: :destroy
+
+  has_many :comments, as: :commentable
+
   def normalize
     if quote
       self.quote = quote.gsub('"', '').gsub("'", '`').gsub("\r\n", ' ')
@@ -48,14 +53,18 @@ class Raspa < ActiveRecord::Base
     Raspa.where(author: author)
   end
 
-  def tag_list
-    tags.map(&:name).join(", ")
-  end
+  # def tag_list
+  #   tags.map(&:name).join(", ")
+  # end
 
-  def tag_list=(names)
-    self.tags = names.split(",").map do |n|
-      Tag.where(name: n.strip).first_or_create!
-    end
+  # def tag_list=(names)
+  #   self.tags = names.split(",").map do |n|
+  #     Tag.where(name: n.strip).first_or_create!
+  #   end
+  # end
+
+  def tag_tokens=(tokens)
+    self.tag_ids = Tag.ids_from_tokens(tokens)
   end
 
   def assign_origin

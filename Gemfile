@@ -28,3 +28,10 @@ end
 #   gem 'rails3_serve_static_assets', github: 'heroku/rails3_serve_static_assets'
 # end
 
+gem "rmagick", '2.13.2'
+gem 'carrierwave', '>= 0.5.3'
+gem "fog", "~> 1.3.1"
+gem 'aws-s3'
+gem 'nested_form'
+gem 'jquery-fileupload-rails'
+gem 'best_in_place', github: 'bernat/best_in_place'

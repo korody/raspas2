@@ -3,7 +3,7 @@ class PublicProfile < ActiveRecord::Base
 
   accepts_nested_attributes_for :author
 
-  delegate :name, :username, :remember_token, :has_jobs, :dob, :social, :website, :bio, to: :author, allow_nil: true
+  # delegate :name, :username, :remember_token, :has_jobs, :dob, :social, :website, :bio, to: :author, allow_nil: true
 
   def legend?
     true

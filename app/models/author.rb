@@ -1,11 +1,14 @@
 # encoding: utf-8
 class Author < ActiveRecord::Base
+  attr_reader :job_tokens
   
   validates_presence_of :name
   validates_format_of :username, with: /^[A-Za-z\d_]+$/, multiline: true, message: "só pode conter letras e números, sem espaços.", on: :update
 
   has_many :raspas
-  has_many :origins
+
+  has_many :authorships, dependent: :destroy
+  has_many :origins, through: :authorships
 
   has_many :experiences, dependent: :destroy
   has_many :jobs, through: :experiences
@@ -21,7 +24,13 @@ class Author < ActiveRecord::Base
 
   belongs_to :profile, polymorphic: true
 
+  has_many :attachments, as: :attachable, dependent: :destroy
+
+  has_many :comments, as: :commentable, dependent: :destroy
+
   delegate :legend?, :email, :password, :password_digest, :aka, :dod, :become_user, to: :profile, allow_nil: true
+
+  accepts_nested_attributes_for :attachments
 
   before_create do
     self.remember_token = SecureRandom.urlsafe_base64
@@ -60,14 +69,23 @@ class Author < ActiveRecord::Base
     reaspas.find_by(raspa_id: raspa).destroy
   end
 
-  def has_jobs
-    jobs.map(&:name).join(", ")
+  # def has_jobs
+  #   jobs.map(&:name).join(", ")
+  # end
+
+  # def has_jobs=(names)
+  #   self.jobs = names.split(",").map do |j|
+  #     Job.where(name: j.strip).first_or_create!
+  #   end
+  # end
+
+  def self.ids_from_tokens(tokens)
+    tokens.gsub!(/<<<(.+?)>>>/) { Author.create!(name: $1, profile: PublicProfile.create!).id }
+    tokens.split(',')
   end
 
-  def has_jobs=(names)
-    self.jobs = names.split(",").map do |j|
-      Job.where(name: j.strip).first_or_create!
-    end
+  def job_tokens=(tokens)
+    self.job_ids = Job.ids_from_tokens(tokens)
   end
 
   # def to_s
