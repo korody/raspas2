@@ -1,14 +1,15 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.0.beta1'
+gem 'rails', '4.0.0'
 
 gem 'pg'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'slim-rails'
 gem 'jquery-rails'
-gem 'sass-rails',   '~> 4.0.0.beta1'
-gem 'coffee-rails', '~> 4.0.0.beta1'
+gem 'bootstrap-sass'
+gem 'sass-rails',   '~> 4.0.0'
+gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'font-awesome-rails'
 gem 'uglifier', '>= 1.0.3'

@@ -13,10 +13,10 @@ html
     meta name="description" content="#{ page_description yield(:description) }"
     / = display_meta_tags site: 'raspas'
   body
-    .container-fluid
-      .row-fluid
-        / = render 'fbsdk'
-        = render 'flash'
-        = yield :sidebar
-        = yield
+    = render 'flash'
+    / = render 'fbsdk'
+    .col.col-lg-11
+      = yield
+    .col.col-lg-1.fill
+      = render 'layouts/sidebar'
   = javascript_include_tag "application", "data-turbolinks-track" => true

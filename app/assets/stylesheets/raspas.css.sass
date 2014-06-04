@@ -1,16 +1,53 @@
 @import 'presets'
 
-.raspa
-  height: 340px
-  margin-bottom: 30px
-  padding: 20px
+.element
+  background-color: #F8F8F8
+
+.element:nth-child(odd)
+  background-color: #FFF5EE
+
+.img-thumbnail
+  background-color: transparent
+  padding: 0
+  margin: 0
+
+.raspa-container
+  border: 1px solid white
+  height: 400px
+  // margin-bottom: 30px
+  overflow: hidden
+  position: relative
   width: 100%
 
+  .raspa-background
+    height: 100%
+    position: absolute
+    width: 100%
+    z-index: 1
+
+    img
+      width: 100%
+      opacity: 0.1
+
+  .raspa-info
+    bottom: 0
+    left: 0
+    padding: 30px 40px
+    position: absolute
+    // text-align: justify
+    width: 100%
+    z-index: 3
+
   p.quote
+    color: $text
+    margin-bottom: 10px
 
     span.note
       color: $note
-  
-  i
-    padding-right: 20px 
 
+  p.owner
+    font-weight: bold
+    margin-bottom: 10px
+
+  p.raspa-data
+    color: $note

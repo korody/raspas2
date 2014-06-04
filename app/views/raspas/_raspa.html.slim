@@ -1,18 +1,17 @@
 = content_tag 'div', class:"col-lg-4 element".html_safe do
-  .raspa.thumbnail.border
-    p.quote.lead = "#{truncate(raspa.quote.gsub(/\n/, '<br/>'), length: 400)} <span class='note'>#{raspa.note}</span>".html_safe
-    h5 = link_to "{ #{raspa.author.name}", authors_raspas_path(raspa.author.username)
-    p = raspa.created_at.strftime("%d.%m.%Y")
-    p = link_to raspa.origin.title, raspa.origin if raspa.origin
-    = raw raspa.tags.pluck(:name).map { |t| link_to t, tag_path(t) }.join(', ')
-    / - if current_user?(raspa.author) || current_user?(raspa.reaspas.first.author)
-    = icon_link_to 'pencil', edit_raspa_path(raspa), title: 'editar', post: @new_raspa
-    = icon_link_to 'trash', raspa, method: :delete, title: 'apagar'
-    / - else
-      = render 'reaspas/form', raspa: raspa
-    / REVISE for performance and best-practice ------------
-    br
-    - raspa.reaspas.last(1).each do |a|
-      = "recitado por #{link_to a.author.name, a.author}".html_safe
-      = " e mais #{raspa.citations.size - 1}" if raspa.citations.size > 1 
-    / ------------------- REVISE
+  .raspa-container
+    .raspa-background 
+      - raspa.author.attachments.shuffle.first(1).each do |a|
+        = image_tag a.image_url(:regular).to_s, class: 'img-responsive' unless @author
+    .raspa-info
+      p.quote.lead = "#{truncate(raspa.quote.gsub(/\n/, '<br/>'), length: 400)} <span class='note'>#{raspa.note}</span>".html_safe
+      p.owner.lead = link_to "{ #{raspa.author.name}", authors_raspas_path(raspa.author.username)
+      p.raspa-data = "#{icon_tag 'time'} #{raspa.created_at.strftime("%d.%m.%Y")}  &nbsp;&nbsp; #{icon_tag 'globe' if raspa.origin} #{link_to raspa.origin.title, raspa.origin if raspa.origin} #{icon_tag 'tags' if raspa.tags.any?} #{raw raspa.tags.pluck(:name).map { |t| link_to t, tag_path(t) }.join(', ') if raspa.tags.any?}".html_safe
+      /---- REVISE
+      - raspa.reaspas.last(1).each do |a|
+        = "recitado por #{link_to a.author.name, a.author}".html_safe
+        = " e mais #{raspa.citations.size - 1}" if raspa.citations.size > 1 
+      / - if current_user == raspa.author
+        = icon_link_to 'pencil', edit_raspa_path(raspa), title: 'editar', post: @new_raspa
+        = icon_link_to 'trash', raspa, method: :delete, title: 'apagar', class: 'pull-right'  
+      / = render 'reaspas/form', raspa: raspa

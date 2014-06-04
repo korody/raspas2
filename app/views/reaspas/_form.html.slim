@@ -10,5 +10,7 @@
           #{icon_tag 'share'} RECITAR
 
   - else
-    none
+    = form_for [raspa, Reaspa.new], remote: true do |f|
+      = content_tag :button, type: 'submit', class: 'btn btn-default', 'data-disable-with' => "#{icon_tag('share')} DESCITAR", 'data-relationship' => 'fan' do
+        #{icon_tag 'share'} RECITAR
   / REVISE - performance and best practices

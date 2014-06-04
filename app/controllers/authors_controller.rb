@@ -9,13 +9,13 @@ class AuthorsController < ApplicationController
 
   def index
     @authors = Author.order(:name)
-    author_list = @authors.where("name ilike ?", "%#{params[:q]}%").map {|a| {id: a.id, name: a.name} } 
+    author_list = @authors.where("name ilike ?", "%#{params[:q]}%")
     author_query = author_list.empty? ? [{id: "<<<#{params[:q]}>>>", name: "NOVO PENSADOR: \"#{params[:q]}\""}] : author_list
     respond_with(@author) do |format|
-      format.json { render json: author_query }
+      format.json { render json: author_query.to_json(only: [:id, :name]) }
     end
   end
-
+  
   def show
     @author = Author.where(username: params[:username]).first
     @raspas = @author.raspas
@@ -36,7 +36,8 @@ class AuthorsController < ApplicationController
   end
 
   def edit
-    @author = Author.find(params[:id])
+    # @author = Author.find(params[:id])
+    @author = Author.where(username: params[:username]).first
     @profile = @author.profile
   end
 
@@ -62,7 +63,8 @@ class AuthorsController < ApplicationController
   end
 
   def correct_user
-    @author = Author.find(params[:id])
+    # @author = Author.find(params[:id])
+    @author = Author.where(username: params[:username]).first
     unless @author.legend?
       redirect_to(root_path) unless current_user?(@author)
     end

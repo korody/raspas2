@@ -1,3 +1,7 @@
-.col.col-lg-10
-  section
-    = render @raspas
+section
+  = content_tag 'div', class:"col-lg-4 element".html_safe do
+    .raspa-container
+      .author-background
+        - @author.attachments.shuffle.first(1).each do |a|
+          = link_to image_tag(a.image_url(:regular)).to_s, authors_raspas_path(@author.username)
+  = render @raspas

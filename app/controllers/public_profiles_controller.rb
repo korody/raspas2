@@ -13,7 +13,7 @@ class PublicProfilesController < ApplicationController
     # @profile.update_attributes!(user_params)
     if @profile.update_attributes(public_params)
       flash[:success] = "atualizado"
-      redirect_to authors_raspas_path(@profile.username)
+      redirect_to authors_raspas_path(@profile.author.username)
     else
       render "authors/edit"
     end

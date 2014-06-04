@@ -1,5 +1,10 @@
 - provide :title, "passe adiante"
-.col.col-lg-10
-  section#wall
-    - @raspas.each do |raspa|
-      = render 'raspa', raspa: raspa
+section#wall.isotope
+  = render @raspas
+/ <% @images.each_slice(6) do |slice| -%>
+/   <div class="gallery">
+/     <% slice.each do |image| -%>
+/       <%= image_tag(image.url, :alt => image.alt) %>
+/     <% end -%>
+/   </div>
+/ <% end -%>

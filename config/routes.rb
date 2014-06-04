@@ -8,7 +8,8 @@ Raspas::Application.routes.draw do
   post '/signin', to: 'sessions#create'
   get '/signin', to: 'sessions#new'
   get '/signup', to: 'authors#new'
-  get '/authors/:username', to: 'authors#show', as: 'authors_raspas'
+  get '/:username/raspas', to: 'authors#show', as: 'authors_raspas'
+  get '/:username/edit', to: 'authors#edit', as: 'authors_edit'
   get '/:username/feed', to: 'authors#feed', as: 'feed'
 
   resources :sessions
